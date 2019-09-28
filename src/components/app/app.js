@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import ListItem from '../list_item/list_item';
+import List from '../list/list';
+import './app.css';
 
 export default class App extends Component {
   initialId = 1;
@@ -25,12 +26,12 @@ export default class App extends Component {
       inputItem: '',
       todoItems: [...this.state.todoItems, {
         value: this.state.inputItem,
-        id: this.initialId++
+        id: this.initialId++,
+        completed: false
       }]
-    })
-    
+    })  
   }
-
+  
   deleteItem = (index) => {
     this.setState(({todoItems}) => {
       const newArray = [
@@ -41,26 +42,35 @@ export default class App extends Component {
         todoItems: newArray
       }
     })  
+    console.log(this.state.todoItems)
+  }
+  
+  onCompletedHandler = (id) => {
+    console.log(id)
+    this.setState(({todoItems}) => {
+      return {todoItems: todoItems.map(ti => ti.id === id ? ({...ti, completed: !ti.completed}) : ti)};
+    })
   }
   
   render() { 
     const { todoItems } = this.state
     return (
-      <div>
+      <div className="jumbotron todo-app">
         <h2>React Todo App</h2>
-        <form onSubmit={this.onSubmit}>
+        <form onSubmit={this.onSubmit} className="form">
           <input
             value={this.state.inputItem}
             placeholder="Add todo"
             type="text"
-            className="input"
+            className="form-control form-control-lg"
             onChange={this.onChange}
           />
-          <button type="submit" className="btn">Add</button>
+          <button type="submit" className="btn btn-secondary">Add</button>
         </form>
-        <ListItem 
+        <List
           todoItems={todoItems} 
           deleteItem={this.deleteItem}
+          onCompletedHandler={this.onCompletedHandler}
         />
       </div>
     )
