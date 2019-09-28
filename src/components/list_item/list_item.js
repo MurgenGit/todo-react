@@ -3,12 +3,11 @@ import React from 'react';
 const ListItem = (props) => {
   return (
     <ul>
-      {props.todoItem.map((todoItem, id) =>
-        <li key={id}>
-          {todoItem}
-          <button onClick={props.deleteItem(id)}>x</button>
-        </li> 
-        
+      {props.todoItems.map((todoItem, index) =>
+        <li key={index}>
+          {todoItem.value}
+          <button onClick={() => props.deleteItem(index)}>x</button>
+        </li>   
       )}
     </ul>
   )

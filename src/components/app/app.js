@@ -2,21 +2,20 @@ import React, { Component } from 'react';
 import ListItem from '../list_item/list_item';
 
 export default class App extends Component {
+  initialId = 1;
 
   constructor(props) {
     super(props)
 
     this.state = {
-      todoItem: [],
-      inputItem: '',
-      id: ''
+      todoItems: [],
+      inputItem: ''
     }
   }
-  initialId = 1;
 
   onChange = (event) => {
     this.setState({
-      inputItem: event.target.value
+      inputItem: event.target.value,
     })
   }
 
@@ -24,27 +23,28 @@ export default class App extends Component {
     event.preventDefault();
     this.setState({
       inputItem: '',
-      todoItem: [...this.state.todoItem, this.state.inputItem],
-      id: this.initialId++
+      todoItems: [...this.state.todoItems, {
+        value: this.state.inputItem,
+        id: this.initialId++
+      }]
     })
-    console.log(this.state.id)
+    
   }
 
-  deleteItem = (id) => {
-    this.setState(({todoItem}) => {
-      const deleteId = todoItem.findIndex((el) => el.id === id)
+  deleteItem = (index) => {
+    this.setState(({todoItems}) => {
       const newArray = [
-        ...todoItem.slice(0, deleteId),
-        ...todoItem.slice(deleteId + 1)
+        ...todoItems.slice(0, index),
+        ...todoItems.slice(index + 1)
       ]
       return {
-        todoItem: newArray
+        todoItems: newArray
       }
-    })
+    })  
   }
   
   render() { 
-    const { todoItem } = this.state
+    const { todoItems } = this.state
     return (
       <div>
         <h2>React Todo App</h2>
@@ -59,9 +59,9 @@ export default class App extends Component {
           <button type="submit" className="btn">Add</button>
         </form>
         <ListItem 
-          todoItem={todoItem} 
+          todoItems={todoItems} 
           deleteItem={this.deleteItem}
-        />        
+        />
       </div>
     )
   }
