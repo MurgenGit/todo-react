@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import List from '../list/list';
 import './app.css';
+import DeleteCompleteItems from '../deleteCompletedItems/deleteCompletedItems';
 
 export default class App extends Component {
   initialId = 1;
@@ -46,9 +47,15 @@ export default class App extends Component {
   }
   
   onCompletedHandler = (id) => {
-    console.log(id)
     this.setState(({todoItems}) => {
       return {todoItems: todoItems.map(ti => ti.id === id ? ({...ti, completed: !ti.completed}) : ti)};
+    })
+  }
+
+  onDeleteCompletedItems = () => {
+    let newArray = this.state.todoItems.filter(ti => ti.completed !== true)
+    this.setState({
+      todoItems: newArray
     })
   }
   
@@ -72,6 +79,7 @@ export default class App extends Component {
           deleteItem={this.deleteItem}
           onCompletedHandler={this.onCompletedHandler}
         />
+        <DeleteCompleteItems onDeleteCompletedItems={this.onDeleteCompletedItems}/>
       </div>
     )
   }
