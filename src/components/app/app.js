@@ -17,12 +17,13 @@ export default class App extends Component {
 
   onChange = (event) => {
     this.setState({
-      inputItem: event.target.value,
+      inputItem: event.target.value.trimLeft()
     })
   }
 
   onSubmit = (event) => {
     event.preventDefault();
+
     this.setState({
       inputItem: '',
       todoItems: [...this.state.todoItems, {
@@ -58,6 +59,7 @@ export default class App extends Component {
       todoItems: newArray
     })
   }
+
   
   render() { 
     const { todoItems } = this.state
@@ -72,7 +74,11 @@ export default class App extends Component {
             className="form-control form-control-lg"
             onChange={this.onChange}
           />
-          <button type="submit" className="btn btn-secondary">Add</button>
+          <button 
+            type="submit" 
+            className="btn btn-secondary"
+            disabled={this.state.inputItem.length <= 2}
+          >ADD</button>
         </form>
         <List
           todoItems={todoItems} 
